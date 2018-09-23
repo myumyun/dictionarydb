@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dictionarydb.dto.CategoryDTO;
 import com.dictionarydb.dto.DictionaryDTO;
-import com.dictionarydb.entity.Category;
 import com.dictionarydb.entity.Dictionary;
 import com.dictionarydb.service.CategoryService;
 import com.dictionarydb.service.DictionaryService;
@@ -54,7 +53,8 @@ public class DictionaryController {
 	}
 
 	@PostMapping
-	public DictionaryDTO saveDictionary(@RequestBody DictionaryDTO dictionaryDTO) {
+	public DictionaryDTO createDictionary(@RequestBody DictionaryDTO dictionaryDTO) {
+		System.out.println(dictionaryDTO);
 		Dictionary dictionary = new Dictionary();
 		if (dictionaryDTO != null) {
 			dictionary = ObjectMapperUtils.map(dictionaryDTO, Dictionary.class);

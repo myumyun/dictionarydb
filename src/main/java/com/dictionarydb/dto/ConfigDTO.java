@@ -6,11 +6,21 @@ public class ConfigDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private int uniqueid;
 	private String name;
 	private String value;
 	
 	public ConfigDTO() {
 		super();
+	}
+	
+
+	public int getUniqueid() {
+		return uniqueid;
+	}
+	
+	public void setUniqueid(int uniqueid) {
+		this.uniqueid = uniqueid;
 	}
 
 	public String getName() {
@@ -31,6 +41,8 @@ public class ConfigDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ConfigDTO [name=" + name + ", value=" + value + "]";
+		return "ConfigDTO [uniqueid=" + uniqueid + ", name=" + name + ", value=" + value + "]";
 	}
+
+
 }

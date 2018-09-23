@@ -54,7 +54,7 @@ public class CategoryController {
 	
 	@GetMapping
 	public List<CategoryDTO> getCategoryList() {
-		
+		System.out.println("getCategoryList");
 		return ObjectMapperUtils.mapAll(categoryService.get(), CategoryDTO.class);
 	}
 }

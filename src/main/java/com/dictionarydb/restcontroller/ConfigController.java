@@ -14,47 +14,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dictionarydb.dto.CategoryDTO;
+import com.dictionarydb.dto.ConfigDTO;
 import com.dictionarydb.entity.Category;
+import com.dictionarydb.entity.Config;
 import com.dictionarydb.service.CategoryService;
+import com.dictionarydb.service.ConfigService;
 import com.dictionarydb.util.ObjectMapperUtils;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/configs")
 @CrossOrigin
 public class ConfigController {
 	
 	@Autowired
-	private CategoryService categoryService;
+	private ConfigService configService;
 
 	@GetMapping("/{uniqueid}")
-	public CategoryDTO getCategory(@PathVariable int uniqueid) {
-		Category category = categoryService.get(uniqueid);
-		return ObjectMapperUtils.map(category, CategoryDTO.class);
+	public ConfigDTO getConfig(@PathVariable int uniqueid) {
+		return ObjectMapperUtils.map(configService.get(uniqueid), ConfigDTO.class);
 	}
 
 	@PostMapping
-	public CategoryDTO insertCategory(@RequestBody CategoryDTO categoryDTO) { 
-		Category category = new Category();
-		if (categoryDTO != null) {
-			category = ObjectMapperUtils.map(categoryDTO, Category.class);
+	public ConfigDTO insertConfig(@RequestBody ConfigDTO configDTO) { 
+		Config config = new Config();
+		if (configDTO != null) {
+			config = ObjectMapperUtils.map(configDTO, Config.class);
 		}
-		return ObjectMapperUtils.map(categoryService.insert(category), CategoryDTO.class);
+		return ObjectMapperUtils.map(configService.insert(config), ConfigDTO.class);
 	}
 
-	@PutMapping
-	public void updateDictionary() {
-		// TODO
+	@PutMapping(("/{uniqueid}"))
+	public void updateDictionary(@RequestBody ConfigDTO configDTO) {
+		Config config = null;
+		if(configDTO!=null){
+			config = ObjectMapperUtils.map(configDTO, Config.class);
+		}
+		configService.update(config);
 	}
 
 	@DeleteMapping("/{uniqueid}")
-	public int deleteCategory(@PathVariable int uniqueid) {
-		categoryService.delete(uniqueid);
+	public int deleteConfig(@PathVariable int uniqueid) {
+		configService.delete(uniqueid);
 		return uniqueid;
 	}
 	
 	@GetMapping
-	public List<CategoryDTO> getCategoryList() {
-		
-		return ObjectMapperUtils.mapAll(categoryService.get(), CategoryDTO.class);
+	public List<ConfigDTO> getConfigList() {
+		return ObjectMapperUtils.mapAll(configService.get(), ConfigDTO.class);
 	}
 }
