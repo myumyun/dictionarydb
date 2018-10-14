@@ -29,8 +29,8 @@ public class DictionaryController {
 	private DictionaryService dictionaryService;
 	@Autowired
 	private CategoryService categoryService;
-	private final static String[] languages = {"java","C","C++","javascript"};
-	
+	private final static String[] languages = { "java", "C", "C++", "javascript" };
+
 	@GetMapping
 	public List<DictionaryDTO> getDictionaryList() {
 		List<Dictionary> dictionaryList = dictionaryService.get();
@@ -72,7 +72,7 @@ public class DictionaryController {
 		dictionaryService.delete(id);
 		return id;
 	}
-	
+
 	@GetMapping("/languages")
 	public String[] getLanguageList() {
 		return languages;

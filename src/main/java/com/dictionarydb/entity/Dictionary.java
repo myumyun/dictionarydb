@@ -1,6 +1,7 @@
+
 package com.dictionarydb.entity;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,9 +35,9 @@ public class Dictionary {
 	@Column(length = 1000)
 	private String language;
 	@Column(name = "created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	public int getUniqueid() {
 		return uniqueid;
@@ -70,19 +71,19 @@ public class Dictionary {
 		this.tags = tags;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

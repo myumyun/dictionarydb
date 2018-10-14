@@ -1,7 +1,8 @@
 package com.dictionarydb.dto;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
+
 
 public class DictionaryDTO implements Serializable {
 	/**
@@ -18,8 +19,8 @@ public class DictionaryDTO implements Serializable {
 	private String tags;
 	private String feeling;
 	private int categoryId;
-	private Timestamp createdAt;
-	private Timestamp updatedAt;
+	private String createdAt;
+	private String updatedAt;
 	private CategoryDTO categoryDTO;
 
 	public DictionaryDTO() {
@@ -66,19 +67,19 @@ public class DictionaryDTO implements Serializable {
 		this.feeling = feeling;
 	}
 
-	public Timestamp getCreatedAt() {
+	public String getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public String getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

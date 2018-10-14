@@ -1,6 +1,10 @@
 package com.dictionarydb.service.impl;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +34,10 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 	@Override
 	public Dictionary get(int uniqueid) {
-		Dictionary dictionary =  dictionaryRepository.findById(uniqueid).get();
-		if(dictionary == null){
+		Dictionary dictionary = dictionaryRepository.findById(uniqueid).get();
+		if (dictionary == null) {
 			try {
-				throw new Exception("Dictionary is not found for uniquieid: "+uniqueid);
+				throw new Exception("Dictionary is not found for uniquieid: " + uniqueid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -60,36 +64,37 @@ public class DictionaryServiceImpl implements DictionaryService {
 	@Override
 	public Dictionary save(Dictionary dictionary) {
 		Dictionary saved = new Dictionary();
-		if(dictionary == null){
+		if (dictionary == null) {
 			try {
 				throw new Exception("Dictionary cannot be null.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}else if(dictionary.getUniqueid() == 0){
-			//TODO implementation
-			//family
+		} else if (dictionary.getUniqueid() == 0) {
+			// TODO implementation
+			// family
 			List<Family> familyList = familyService.get();
 			Family familyVal;
-			if(familyList == null || familyList.size()==0){
+			if (familyList == null || familyList.size() == 0) {
 				Family family = new Family();
 				family.setName("Myumyun");
 				family.setCreatedAt(TimeUtils.getCurrentTimestamp());
 				family.setUpdatedAt(TimeUtils.getCurrentTimestamp());
 				family.setDescription("");
 				familyVal = familyService.insert(family);
-			}else{
+			} else {
 				familyVal = familyList.get(0);
 			}
-			
+
 			dictionary.setFamilyId(familyVal.getUniqueid());
-			
-			//TODO implementation
-			//dictionary type
+
+			// TODO implementation
+			// dictionary type
+			dictionary.setCreatedAt(new Date());
+			dictionary.setUpdatedAt(new Date());
 			dictionary.setType(DictionaryType.CODE.name());
-			
-			saved  = insert(dictionary);
-		}else{
+			saved = insert(dictionary);
+		} else {
 			saved = update(dictionary);
 		}
 		return saved;

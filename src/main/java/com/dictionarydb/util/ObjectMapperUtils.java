@@ -1,15 +1,36 @@
+
 package com.dictionarydb.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MappingContext;
 
 public class ObjectMapperUtils {
 
     private static ModelMapper modelMapper = new ModelMapper();
+    
+    /**
+     * Converter for converting date  
+     * to String date
+     */
+    static Converter<Date, String> dateConverterToString = new Converter<Date, String>() {
+		@Override
+		public String convert(MappingContext<Date, String> context) {
+			SimpleDateFormat dft = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			String createdAt = dft.format(context.getSource());
+			return createdAt;
+		}
+    };
+    
+    
+   
 
     /**
      * Model mapper property setting are specified in the following block.
@@ -19,8 +40,11 @@ public class ObjectMapperUtils {
     static {
         modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.addConverter(dateConverterToString);
     }
    
+    
+    
 
 
     /**
