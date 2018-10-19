@@ -17,4 +17,8 @@ public interface DictionaryService {
 	List<Dictionary> get();
 	
 	Dictionary save(Dictionary dictionary);
+	
+	int count();
+	
+	List<Dictionary> getDictionaryList(int rowCount);
 }

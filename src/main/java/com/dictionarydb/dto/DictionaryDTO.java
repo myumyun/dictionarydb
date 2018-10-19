@@ -22,6 +22,7 @@ public class DictionaryDTO implements Serializable {
 	private String createdAt;
 	private String updatedAt;
 	private CategoryDTO categoryDTO;
+	private int rowCount;
 
 	public DictionaryDTO() {
 		super();
@@ -129,6 +130,16 @@ public class DictionaryDTO implements Serializable {
 				+ code + ", language=" + language + ", type=" + type + ", tags=" + tags + ", feeling=" + feeling
 				+ ", categoryId=" + categoryId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
 				+ ", categoryDTO=" + categoryDTO + "]";
+	}
+
+	
+	public int getRowCount() {
+		return rowCount;
+	}
+
+	
+	public void setRowCount(int rowCount) {
+		this.rowCount = rowCount;
 	}
 
 }

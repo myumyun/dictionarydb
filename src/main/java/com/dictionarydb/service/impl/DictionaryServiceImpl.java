@@ -1,13 +1,13 @@
 package com.dictionarydb.service.impl;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dictionarydb.entity.Dictionary;
@@ -16,7 +16,7 @@ import com.dictionarydb.enumaration.DictionaryType;
 import com.dictionarydb.repository.DictionaryRepository;
 import com.dictionarydb.service.DictionaryService;
 import com.dictionarydb.service.FamilyService;
-import com.dictionarydb.util.ObjectMapperUtils;
+import com.dictionarydb.util.NullAwareBeanUtilsBean;
 import com.dictionarydb.util.TimeUtils;
 
 @Service
@@ -47,7 +47,19 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 	@Override
 	public Dictionary update(Dictionary dictionary) {
-		return dictionaryRepository.save(dictionary);
+		Dictionary dictionaryRead = get(dictionary.getUniqueid());
+		BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
+		try {
+			notNull.copyProperties(dictionaryRead, dictionary);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dictionaryRead.setUpdatedAt(new Date());
+		return dictionaryRepository.save(dictionaryRead);
 
 	}
 
@@ -73,6 +85,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 		} else if (dictionary.getUniqueid() == 0) {
 			// TODO implementation
 			// family
+			
 			List<Family> familyList = familyService.get();
 			Family familyVal;
 			if (familyList == null || familyList.size() == 0) {
@@ -99,4 +112,20 @@ public class DictionaryServiceImpl implements DictionaryService {
 		}
 		return saved;
 	}
+
+	@Override
+	public int count() {
+		return (int) dictionaryRepository.count();
+	}
+
+	@Override
+	public List<Dictionary> getDictionaryList(int rowCount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	private Pageable createPageRequest() {
+		return new PageRequest(0, 10);
+        //Create a new Pageable object here.
+    }
 }

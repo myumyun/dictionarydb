@@ -31,8 +31,8 @@ public class DictionaryController {
 	private CategoryService categoryService;
 	private final static String[] languages = { "java", "C", "C++", "javascript" };
 
-	@GetMapping
-	public List<DictionaryDTO> getDictionaryList() {
+	@GetMapping("/list/{rowCount}")
+	public List<DictionaryDTO> getDictionaryList(@PathVariable int rowCount) {
 		List<Dictionary> dictionaryList = dictionaryService.get();
 		List<DictionaryDTO> dictionaryDTOList = new ArrayList<>();
 		for (Dictionary dictionary : dictionaryList) {
@@ -54,7 +54,6 @@ public class DictionaryController {
 
 	@PostMapping
 	public DictionaryDTO createDictionary(@RequestBody DictionaryDTO dictionaryDTO) {
-		System.out.println(dictionaryDTO);
 		Dictionary dictionary = new Dictionary();
 		if (dictionaryDTO != null) {
 			dictionary = ObjectMapperUtils.map(dictionaryDTO, Dictionary.class);
@@ -63,8 +62,12 @@ public class DictionaryController {
 	}
 
 	@PutMapping
-	public void updateDictionary() {
-		// TODO
+	public DictionaryDTO updateDictionary(@RequestBody DictionaryDTO dictionaryDTO) {
+		Dictionary dictionary = new Dictionary();
+		if (dictionaryDTO != null) {
+			dictionary = ObjectMapperUtils.map(dictionaryDTO, Dictionary.class);
+		}
+		return ObjectMapperUtils.map(dictionaryService.update(dictionary), DictionaryDTO.class);
 	}
 
 	@DeleteMapping("/{id}")
