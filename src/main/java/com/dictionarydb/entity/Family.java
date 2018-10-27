@@ -26,46 +26,60 @@ public class Family {
 	private Timestamp createdAt;
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
-	
+	private String ip;
+
 	public int getUniqueid() {
 		return uniqueid;
 	}
+
 	public void setUniqueid(int uniqueid) {
 		this.uniqueid = uniqueid;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
+
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
+
 	public Timestamp getUpdatedAt() {
 		return updatedAt;
 	}
+
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
 	@Override
 	public String toString() {
 		return "Family [uniqueid=" + uniqueid + ", name=" + name + ", description=" + description + ", createdAt="
-				+ createdAt + ", updatedAt=" + updatedAt + "]";
+				+ createdAt + ", updatedAt=" + updatedAt + ", ip=" + ip + "]";
 	}
-	
-	
-	
-	
-	
 
 }

@@ -17,4 +17,5 @@ public interface FamilyService {
 
 	List<Family> get();
 	
+	void init();
 }

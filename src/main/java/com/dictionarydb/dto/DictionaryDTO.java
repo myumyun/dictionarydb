@@ -1,13 +1,9 @@
 package com.dictionarydb.dto;
 
 import java.io.Serializable;
-import java.util.Date;
-
 
 public class DictionaryDTO implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private int uniqueid;
@@ -15,14 +11,13 @@ public class DictionaryDTO implements Serializable {
 	private String description;
 	private String code;
 	private String language;
+	private String link;
 	private String type;
 	private String tags;
 	private String feeling;
-	private int categoryId;
+	private String category;
 	private String createdAt;
 	private String updatedAt;
-	private CategoryDTO categoryDTO;
-	private int rowCount;
 
 	public DictionaryDTO() {
 		super();
@@ -84,20 +79,12 @@ public class DictionaryDTO implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public int getCategoryId() {
-		return categoryId;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
-	}
-
-	public CategoryDTO getCategoryDTO() {
-		return categoryDTO;
-	}
-
-	public void setCategoryDTO(CategoryDTO categoryDTO) {
-		this.categoryDTO = categoryDTO;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getCode() {
@@ -124,22 +111,20 @@ public class DictionaryDTO implements Serializable {
 		this.type = type;
 	}
 
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
 	@Override
 	public String toString() {
 		return "DictionaryDTO [uniqueid=" + uniqueid + ", name=" + name + ", description=" + description + ", code="
-				+ code + ", language=" + language + ", type=" + type + ", tags=" + tags + ", feeling=" + feeling
-				+ ", categoryId=" + categoryId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ ", categoryDTO=" + categoryDTO + "]";
-	}
-
-	
-	public int getRowCount() {
-		return rowCount;
-	}
-
-	
-	public void setRowCount(int rowCount) {
-		this.rowCount = rowCount;
+				+ code + ", language=" + language + ", link=" + link + ", type=" + type + ", tags=" + tags
+				+ ", feeling=" + feeling + ", category=" + category + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
 	}
 
 }

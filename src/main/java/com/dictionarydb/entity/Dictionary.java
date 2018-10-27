@@ -24,8 +24,8 @@ public class Dictionary {
 	private String type;
 	@Column(length = 2000)
 	private String description;
-	private int familyId;
-	private int categoryId;
+	private String family;
+	private String category;
 	@Column(length = 1000)
 	private String tags;
 	@Column(length = 1000)
@@ -33,7 +33,9 @@ public class Dictionary {
 	@Column(length = 5000)
 	private String code;
 	@Column(length = 1000)
+	private String link;
 	private String language;
+	private String ip;
 	@Column(name = "created_at")
 	private Date createdAt;
 	@Column(name = "updated_at")
@@ -87,28 +89,12 @@ public class Dictionary {
 		this.updatedAt = updatedAt;
 	}
 
-	public int getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
-	}
-
 	public String getFeeling() {
 		return feeling;
 	}
 
 	public void setFeeling(String feeling) {
 		this.feeling = feeling;
-	}
-
-	public int getFamilyId() {
-		return familyId;
-	}
-
-	public void setFamilyId(int familyId) {
-		this.familyId = familyId;
 	}
 
 	public String getType() {
@@ -135,12 +121,44 @@ public class Dictionary {
 		this.language = language;
 	}
 
+	public String getFamily() {
+		return family;
+	}
+
+	public void setFamily(String family) {
+		this.family = family;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
 	@Override
 	public String toString() {
 		return "Dictionary [uniqueid=" + uniqueid + ", name=" + name + ", type=" + type + ", description=" + description
-				+ ", familyId=" + familyId + ", categoryId=" + categoryId + ", tags=" + tags + ", feeling=" + feeling
-				+ ", code=" + code + ", language=" + language + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ "]";
+				+ ", family=" + family + ", category=" + category + ", tags=" + tags + ", feeling=" + feeling
+				+ ", code=" + code + ", link=" + link + ", language=" + language + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + "]";
 	}
 
 }

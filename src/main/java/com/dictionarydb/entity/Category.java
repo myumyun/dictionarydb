@@ -23,7 +23,7 @@ public class Category {
 	private Timestamp createdAt;
 	@Column(length = 23)
 	private Timestamp updatedAt;
-	
+	private String ip;
 
 	public int getUniqueid() {
 		return uniqueid;
@@ -73,11 +73,21 @@ public class Category {
 		this.updatedAt = updatedAt;
 	}
 
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
 	@Override
 	public String toString() {
 		return "Category [uniqueid=" + uniqueid + ", name=" + name + ", description=" + description
 				+ ", parentCategoryId=" + parentCategoryId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ "]";
+				+ ", ip=" + ip + "]";
 	}
+
+	
 
 }

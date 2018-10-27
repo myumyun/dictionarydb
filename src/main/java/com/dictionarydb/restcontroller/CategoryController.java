@@ -2,6 +2,8 @@ package com.dictionarydb.restcontroller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.dictionarydb.dto.CategoryDTO;
 import com.dictionarydb.entity.Category;
@@ -22,7 +26,7 @@ import com.dictionarydb.util.ObjectMapperUtils;
 @RequestMapping("/categories")
 @CrossOrigin
 public class CategoryController {
-	
+
 	@Autowired
 	private CategoryService categoryService;
 
@@ -33,10 +37,14 @@ public class CategoryController {
 	}
 
 	@PostMapping
-	public CategoryDTO insertCategory(@RequestBody CategoryDTO categoryDTO) { 
+	public CategoryDTO insertCategory(@RequestBody CategoryDTO categoryDTO) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+		String ip = request.getRemoteAddr();
 		Category category = new Category();
 		if (categoryDTO != null) {
 			category = ObjectMapperUtils.map(categoryDTO, Category.class);
+			category.setIp(ip);
 		}
 		return ObjectMapperUtils.map(categoryService.insert(category), CategoryDTO.class);
 	}
@@ -51,7 +59,7 @@ public class CategoryController {
 		categoryService.delete(uniqueid);
 		return uniqueid;
 	}
-	
+
 	@GetMapping
 	public List<CategoryDTO> getCategoryList() {
 		System.out.println("getCategoryList");

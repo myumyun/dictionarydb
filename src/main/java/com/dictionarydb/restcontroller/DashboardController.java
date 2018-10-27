@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dictionarydb.entity.Book;
 import com.dictionarydb.service.BookService;
+import com.dictionarydb.service.DictionaryService;
 
 import ch.qos.logback.core.util.ContentTypeUtil;
 
@@ -34,6 +35,9 @@ public class DashboardController {
 
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private DictionaryService dictionaryService;
+	
 
 	@GetMapping
 	public String getBookList() {
@@ -91,5 +95,8 @@ public class DashboardController {
 		InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
 		return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
 	}
+	
+	
+	
 
 }

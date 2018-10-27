@@ -6,18 +6,17 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dictionarydb.entity.Dictionary;
+import com.dictionarydb.entity.DictionaryFilter;
 import com.dictionarydb.entity.Family;
 import com.dictionarydb.enumaration.DictionaryType;
 import com.dictionarydb.repository.DictionaryRepository;
 import com.dictionarydb.service.DictionaryService;
 import com.dictionarydb.service.FamilyService;
 import com.dictionarydb.util.NullAwareBeanUtilsBean;
-import com.dictionarydb.util.TimeUtils;
+import com.dictionarydb.util.StringUtils;
 
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
@@ -48,7 +47,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 	@Override
 	public Dictionary update(Dictionary dictionary) {
 		Dictionary dictionaryRead = get(dictionary.getUniqueid());
-		BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
+		BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
 		try {
 			notNull.copyProperties(dictionaryRead, dictionary);
 		} catch (IllegalAccessException e) {
@@ -83,26 +82,13 @@ public class DictionaryServiceImpl implements DictionaryService {
 				e.printStackTrace();
 			}
 		} else if (dictionary.getUniqueid() == 0) {
-			// TODO implementation
-			// family
-			
 			List<Family> familyList = familyService.get();
-			Family familyVal;
 			if (familyList == null || familyList.size() == 0) {
-				Family family = new Family();
-				family.setName("Myumyun");
-				family.setCreatedAt(TimeUtils.getCurrentTimestamp());
-				family.setUpdatedAt(TimeUtils.getCurrentTimestamp());
-				family.setDescription("");
-				familyVal = familyService.insert(family);
+				familyService.init();
+				familyList = familyService.get();
 			} else {
-				familyVal = familyList.get(0);
+				dictionary.setFamily(familyList.get(0).getName());
 			}
-
-			dictionary.setFamilyId(familyVal.getUniqueid());
-
-			// TODO implementation
-			// dictionary type
 			dictionary.setCreatedAt(new Date());
 			dictionary.setUpdatedAt(new Date());
 			dictionary.setType(DictionaryType.CODE.name());
@@ -123,9 +109,29 @@ public class DictionaryServiceImpl implements DictionaryService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	private Pageable createPageRequest() {
-		return new PageRequest(0, 10);
-        //Create a new Pageable object here.
-    }
+
+	@Override
+	public List<Dictionary> getDictionaryListWithFilters(DictionaryFilter dictionaryFilter) {
+		return dictionaryRepository.getDictionariesByName(dictionaryFilter.getTitle());
+	}
+
+	@Override
+	public void generate(int dictionaryCount) {
+		int stop = 1000;
+		Dictionary dictionary = null;
+		if (dictionaryCount != 0) {
+			stop = dictionaryCount;
+		}
+		for (int i = 0; i < stop; i++) {
+			dictionary = new Dictionary();
+			dictionary.setName(StringUtils.generateString());
+			dictionary.setDescription(StringUtils.generateString());
+			dictionary.setCreatedAt(new Date());
+			dictionary.setUpdatedAt(new Date());
+			dictionary.setType(DictionaryType.CODE.name());
+			dictionary.setFamily("TEST");
+			dictionaryRepository.save(dictionary);
+		}
+
+	}
 }

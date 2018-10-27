@@ -24,6 +24,7 @@ public class Book {
 	private Timestamp createdAt;
 	@Column(length = 23)
 	private Timestamp updatedAt;
+	private String ip;
 
 	public int getUniqueid() {
 		return uniqueid;
@@ -73,10 +74,20 @@ public class Book {
 		this.updatedAt = updatedAt;
 	}
 
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
 	@Override
 	public String toString() {
 		return "Book [uniqueid=" + uniqueid + ", name=" + name + ", description=" + description + ", document="
-				+ document + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+				+ document + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", ip=" + ip + "]";
 	}
+
+	
 
 }

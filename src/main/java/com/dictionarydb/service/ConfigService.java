@@ -16,4 +16,5 @@ public interface ConfigService {
 
 	List<Config> get();
 	
+	void initializeConfig();
 }

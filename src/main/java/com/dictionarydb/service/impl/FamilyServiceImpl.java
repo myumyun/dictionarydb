@@ -11,6 +11,7 @@ import com.dictionarydb.repository.DictionaryRepository;
 import com.dictionarydb.repository.FamilyRepository;
 import com.dictionarydb.service.DictionaryService;
 import com.dictionarydb.service.FamilyService;
+import com.dictionarydb.util.TimeUtils;
 
 @Service
 public class FamilyServiceImpl implements FamilyService {
@@ -43,6 +44,17 @@ public class FamilyServiceImpl implements FamilyService {
 		return familyRepository.findAll();
 	}
 
+	@Override
+	public void init() {
+		List<Family> familyList = familyRepository.findAll();
+		if(familyList == null || familyList.size()==0){
+			Family family = new Family();
+			family.setName("Myumyun");
+			family.setCreatedAt(TimeUtils.getCurrentTimestamp());
+			family.setUpdatedAt(TimeUtils.getCurrentTimestamp());
+			familyRepository.save(family);
+		}
+	}
 	
-
+	
 }

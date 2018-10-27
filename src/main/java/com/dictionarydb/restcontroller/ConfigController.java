@@ -2,7 +2,11 @@ package com.dictionarydb.restcontroller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.dictionarydb.dto.CategoryDTO;
 import com.dictionarydb.dto.ConfigDTO;
-import com.dictionarydb.entity.Category;
 import com.dictionarydb.entity.Config;
-import com.dictionarydb.service.CategoryService;
 import com.dictionarydb.service.ConfigService;
 import com.dictionarydb.util.ObjectMapperUtils;
 
@@ -25,7 +28,7 @@ import com.dictionarydb.util.ObjectMapperUtils;
 @RequestMapping("/configs")
 @CrossOrigin
 public class ConfigController {
-	
+
 	@Autowired
 	private ConfigService configService;
 
@@ -35,10 +38,14 @@ public class ConfigController {
 	}
 
 	@PostMapping
-	public ConfigDTO insertConfig(@RequestBody ConfigDTO configDTO) { 
+	public ConfigDTO insertConfig(@RequestBody ConfigDTO configDTO) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+		String ip = request.getRemoteAddr();
 		Config config = new Config();
 		if (configDTO != null) {
 			config = ObjectMapperUtils.map(configDTO, Config.class);
+			config.setIp(ip);
 		}
 		return ObjectMapperUtils.map(configService.insert(config), ConfigDTO.class);
 	}
@@ -46,7 +53,7 @@ public class ConfigController {
 	@PutMapping(("/{uniqueid}"))
 	public void updateDictionary(@RequestBody ConfigDTO configDTO) {
 		Config config = null;
-		if(configDTO!=null){
+		if (configDTO != null) {
 			config = ObjectMapperUtils.map(configDTO, Config.class);
 		}
 		configService.update(config);
@@ -57,9 +64,15 @@ public class ConfigController {
 		configService.delete(uniqueid);
 		return uniqueid;
 	}
-	
+
 	@GetMapping
 	public List<ConfigDTO> getConfigList() {
 		return ObjectMapperUtils.mapAll(configService.get(), ConfigDTO.class);
+	}
+
+	@GetMapping("/init")
+	public ResponseEntity<String> init() {
+		configService.initializeConfig();
+		return new ResponseEntity<>("init success.", HttpStatus.OK);
 	}
 }
