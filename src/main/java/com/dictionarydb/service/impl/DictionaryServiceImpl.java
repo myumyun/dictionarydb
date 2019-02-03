@@ -4,6 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+import javax.xml.transform.Source;
+
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,15 +15,17 @@ import com.dictionarydb.entity.Dictionary;
 import com.dictionarydb.entity.DictionaryFilter;
 import com.dictionarydb.entity.Family;
 import com.dictionarydb.enumaration.DictionaryType;
+import com.dictionarydb.enumaration.SourceType;
+import com.dictionarydb.enumaration.StatusType;
 import com.dictionarydb.repository.DictionaryRepository;
 import com.dictionarydb.service.DictionaryService;
 import com.dictionarydb.service.FamilyService;
 import com.dictionarydb.util.NullAwareBeanUtilsBean;
 import com.dictionarydb.util.StringUtils;
 
+@Transactional
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
-
 	@Autowired
 	private DictionaryRepository dictionaryRepository;
 	@Autowired
@@ -36,7 +41,8 @@ public class DictionaryServiceImpl implements DictionaryService {
 		Dictionary dictionary = dictionaryRepository.findById(uniqueid).get();
 		if (dictionary == null) {
 			try {
-				throw new Exception("Dictionary is not found for uniquieid: " + uniqueid);
+				throw new Exception(
+						"Dictionary is not found for uniquieid: " + uniqueid);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -59,7 +65,6 @@ public class DictionaryServiceImpl implements DictionaryService {
 		}
 		dictionaryRead.setUpdatedAt(new Date());
 		return dictionaryRepository.save(dictionaryRead);
-
 	}
 
 	@Override
@@ -86,12 +91,14 @@ public class DictionaryServiceImpl implements DictionaryService {
 			if (familyList == null || familyList.size() == 0) {
 				familyService.init();
 				familyList = familyService.get();
+				dictionary.setFamily(familyList.get(0).getName());
 			} else {
 				dictionary.setFamily(familyList.get(0).getName());
 			}
 			dictionary.setCreatedAt(new Date());
 			dictionary.setUpdatedAt(new Date());
 			dictionary.setType(DictionaryType.CODE.name());
+			dictionary.setStatus(StatusType.ACTIVE.name());
 			saved = insert(dictionary);
 		} else {
 			saved = update(dictionary);
@@ -111,8 +118,15 @@ public class DictionaryServiceImpl implements DictionaryService {
 	}
 
 	@Override
-	public List<Dictionary> getDictionaryListWithFilters(DictionaryFilter dictionaryFilter) {
-		return dictionaryRepository.getDictionariesByName(dictionaryFilter.getTitle());
+	public List<Dictionary> getDictionaryListWithFilters(
+			DictionaryFilter dictionaryFilter) {
+		if (dictionaryFilter == null) {
+			return dictionaryRepository.findAll();
+		} else if (!dictionaryFilter.getTitle().isEmpty()) {
+			String nameFilter = "%" + dictionaryFilter.getTitle() + "%";
+			return dictionaryRepository.findByNameIsLike(nameFilter);
+		}
+		return null;
 	}
 
 	@Override
@@ -130,8 +144,20 @@ public class DictionaryServiceImpl implements DictionaryService {
 			dictionary.setUpdatedAt(new Date());
 			dictionary.setType(DictionaryType.CODE.name());
 			dictionary.setFamily("TEST");
+			dictionary.setSource(SourceType.GENERATED.name());
 			dictionaryRepository.save(dictionary);
 		}
 
+	}
+
+	@Override
+	public void deleteAll() {
+		dictionaryRepository.deleteAll();
+	}
+	
+	
+	@Override
+	public void deleteGeneratedDictionaries() {
+		dictionaryRepository.deleteBySource(SourceType.GENERATED.name());
 	}
 }

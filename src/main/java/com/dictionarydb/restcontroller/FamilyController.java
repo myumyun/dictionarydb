@@ -17,14 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.dictionarydb.annotation.Logging;
 import com.dictionarydb.dto.FamilyDTO;
 import com.dictionarydb.entity.Family;
 import com.dictionarydb.service.FamilyService;
 import com.dictionarydb.util.ObjectMapperUtils;
 
+
 @RestController
 @RequestMapping("/families")
 @CrossOrigin
+@Logging
 public class FamilyController {
 	
 	@Autowired
@@ -37,8 +40,12 @@ public class FamilyController {
 	}
 
 	@GetMapping("/{id}")
+	@Logging
 	public FamilyDTO getFamily(@PathVariable int id) {
 		Family family = familyService.get(id);
+		if(family == null){
+			return null;
+		}
 		return ObjectMapperUtils.map(family, FamilyDTO.class);
 	}
 

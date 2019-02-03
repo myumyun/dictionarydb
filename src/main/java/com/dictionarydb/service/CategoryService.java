@@ -15,5 +15,7 @@ public interface CategoryService {
 	void delete(int uniqueid);
 
 	List<Category> get();
+	
+	void deleteAll();
 
 }

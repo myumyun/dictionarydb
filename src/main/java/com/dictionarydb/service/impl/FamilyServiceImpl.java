@@ -26,7 +26,13 @@ public class FamilyServiceImpl implements FamilyService {
 
 	@Override
 	public Family get(int uniqueid) {
-		return familyRepository.findById(uniqueid).get();
+		Family family = null;
+		try {
+			family = familyRepository.findById(uniqueid).get();
+		} catch (Exception e) {
+			System.out.println("there is no family for uniqueid : " + uniqueid);
+		}
+		return family;
 	}
 
 	@Override
@@ -46,15 +52,13 @@ public class FamilyServiceImpl implements FamilyService {
 
 	@Override
 	public void init() {
-		List<Family> familyList = familyRepository.findAll();
-		if(familyList == null || familyList.size()==0){
-			Family family = new Family();
-			family.setName("Myumyun");
-			family.setCreatedAt(TimeUtils.getCurrentTimestamp());
-			family.setUpdatedAt(TimeUtils.getCurrentTimestamp());
-			familyRepository.save(family);
-		}
+		familyRepository.deleteAll();
+		Family family = new Family();
+		family.setName("Myumyun");
+		family.setDescription("AUTHOR");
+		family.setCreatedAt(TimeUtils.getCurrentTimestamp());
+		family.setUpdatedAt(TimeUtils.getCurrentTimestamp());
+		familyRepository.save(family);
 	}
-	
-	
+
 }

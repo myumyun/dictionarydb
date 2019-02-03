@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dictionarydb.entity.Book;
 import com.dictionarydb.service.BookService;
+import com.dictionarydb.service.DashboardService;
 import com.dictionarydb.service.DictionaryService;
 
 import ch.qos.logback.core.util.ContentTypeUtil;
@@ -36,8 +37,13 @@ public class DashboardController {
 	@Autowired
 	private BookService bookService;
 	@Autowired
-	private DictionaryService dictionaryService;
+	private DashboardService dashboardService;
 	
+	@GetMapping("/initializeSystem")
+	public ResponseEntity<String> getInitializeSystem() {
+		dashboardService.initializeSystem();
+		return new ResponseEntity<String>("initialized.", HttpStatus.OK);
+	}
 
 	@GetMapping
 	public String getBookList() {
@@ -50,14 +56,16 @@ public class DashboardController {
 	}
 
 	@GetMapping(path = "/download")
-	public ResponseEntity<InputStreamResource> download(String param) throws IOException {
+	public ResponseEntity<InputStreamResource> download(String param)
+			throws IOException {
 		Book book = bookService.get(1);
 		BufferedWriter writer = null;
 		String filename = "";
 		File file = null;
 		try {
 			// create a temporary file
-			filename = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+			filename = new SimpleDateFormat("yyyyMMdd_HHmmss")
+					.format(Calendar.getInstance().getTime());
 			filename = filename + ".txt";
 			file = new File(filename);
 
@@ -77,26 +85,31 @@ public class DashboardController {
 			}
 		}
 
-		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+		InputStreamResource resource = new InputStreamResource(
+				new FileInputStream(file));
 
-		return ResponseEntity.ok().header("Baeldung-Example-Header", "Value-Handler").contentLength(file.length())
-				.body(resource);
+		return ResponseEntity.ok()
+				.header("Baeldung-Example-Header", "Value-Handler")
+				.contentLength(file.length()).body(resource);
 	}
 
 	@GetMapping("/downloadByUrl")
-	public ResponseEntity<InputStreamResource> downloadByUrl() throws IOException {
+	public ResponseEntity<InputStreamResource> downloadByUrl()
+			throws IOException {
 		String rootPath = System.getProperty("user.dir");
-		File file = new File(rootPath+"/20180929_204645.txt");
+		File file = new File(rootPath + "/20180929_204645.txt");
 
 		HttpHeaders respHeaders = new HttpHeaders();
 		respHeaders.setContentLength(12345678);
-		respHeaders.setContentDispositionFormData("attachment", "fileNameIwant.pdf");
+		respHeaders.setContentDispositionFormData("attachment",
+				"fileNameIwant.pdf");
 
-		InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
-		return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
+		InputStreamResource isr = new InputStreamResource(
+				new FileInputStream(file));
+		return new ResponseEntity<InputStreamResource>(isr, respHeaders,
+				HttpStatus.OK);
 	}
-	
-	
-	
+
+
 
 }

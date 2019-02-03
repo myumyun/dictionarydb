@@ -37,9 +37,13 @@ public class Dictionary {
 	private String language;
 	private String ip;
 	@Column(name = "created_at")
+	@NotNull
 	private Date createdAt;
 	@Column(name = "updated_at")
 	private Date updatedAt;
+	@Column(length = 10)
+	private String status;
+	private String source;
 
 	public int getUniqueid() {
 		return uniqueid;
@@ -153,12 +157,30 @@ public class Dictionary {
 		this.ip = ip;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	@Override
 	public String toString() {
-		return "Dictionary [uniqueid=" + uniqueid + ", name=" + name + ", type=" + type + ", description=" + description
-				+ ", family=" + family + ", category=" + category + ", tags=" + tags + ", feeling=" + feeling
-				+ ", code=" + code + ", link=" + link + ", language=" + language + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + "]";
+		return "Dictionary [uniqueid=" + uniqueid + ", name=" + name + ", type="
+				+ type + ", description=" + description + ", family=" + family
+				+ ", category=" + category + ", tags=" + tags + ", feeling="
+				+ feeling + ", code=" + code + ", link=" + link + ", language="
+				+ language + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
 	}
 
 }

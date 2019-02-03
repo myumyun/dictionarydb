@@ -20,7 +20,6 @@ public class Family {
 	@NotNull
 	private String name;
 	@Column(length = 1000)
-	@NotNull
 	private String description;
 	@Column(name = "created_at")
 	private Timestamp createdAt;

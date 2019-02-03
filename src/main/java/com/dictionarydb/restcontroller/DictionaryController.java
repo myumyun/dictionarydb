@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.dictionarydb.annotation.Logging;
 import com.dictionarydb.dto.DictionaryDTO;
 import com.dictionarydb.entity.Dictionary;
 import com.dictionarydb.entity.DictionaryFilter;
@@ -38,10 +39,10 @@ public class DictionaryController {
 		List<DictionaryDTO> dictionaryDTOList = ObjectMapperUtils.mapAll(dictionaryList, DictionaryDTO.class);
 		return dictionaryDTOList;
 	}
-
+	
+	@Logging
 	@GetMapping
 	public List<DictionaryDTO> getDictionaryListFiltered(DictionaryFilter dictionaryFilter) {
-		System.out.println(dictionaryFilter.toString());
 		List<Dictionary> dictionaryList = dictionaryService.getDictionaryListWithFilters(dictionaryFilter);
 		List<DictionaryDTO> dictionaryDTOList = ObjectMapperUtils.mapAll(dictionaryList, DictionaryDTO.class);
 		return dictionaryDTOList;
@@ -88,6 +89,19 @@ public class DictionaryController {
 		return id;
 	}
 	
+	@GetMapping("/deleteAll")
+	public String deleteAllDictionaries() {
+		dictionaryService.deleteAll();
+		return "all dicitionaries deleted.";
+	}
+	
+	
+	@GetMapping("/deleteGenerated")
+	public String deleteGeneratedDictionaries() {
+		dictionaryService.deleteGeneratedDictionaries();
+		return "all dicitionaries deleted.";
+	}
+	
 	@GetMapping("/generate/{count}")
 	public ResponseEntity<String> generate(@PathVariable int count) {
 		dictionaryService.generate(count);
@@ -98,4 +112,6 @@ public class DictionaryController {
 	public String ping() {
 		return "pong";
 	}
+	
+	
 }

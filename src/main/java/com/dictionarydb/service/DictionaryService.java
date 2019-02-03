@@ -26,4 +26,8 @@ public interface DictionaryService {
 	List<Dictionary> getDictionaryListWithFilters(DictionaryFilter dictionaryFilter);
 	
 	void generate(int dictionaryCount);
+	
+	void deleteAll();
+	
+	void deleteGeneratedDictionaries();
 }

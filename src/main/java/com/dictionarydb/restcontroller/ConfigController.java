@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.dictionarydb.annotation.Logging;
 import com.dictionarydb.dto.ConfigDTO;
 import com.dictionarydb.entity.Config;
 import com.dictionarydb.service.ConfigService;
@@ -50,6 +51,7 @@ public class ConfigController {
 		return ObjectMapperUtils.map(configService.insert(config), ConfigDTO.class);
 	}
 
+	/**
 	@PutMapping(("/{uniqueid}"))
 	public void updateDictionary(@RequestBody ConfigDTO configDTO) {
 		Config config = null;
@@ -58,6 +60,19 @@ public class ConfigController {
 		}
 		configService.update(config);
 	}
+	**/
+	
+	@PutMapping(("/{name}"))
+	@Logging
+	public ResponseEntity<ConfigDTO> updateConfig(@RequestBody ConfigDTO configDTO) {
+		Config config = null;
+		if (configDTO != null) {
+			config = ObjectMapperUtils.map(configDTO, Config.class);
+		}
+		configService.update(config);
+		return new ResponseEntity<>(ObjectMapperUtils.map(config, ConfigDTO.class), HttpStatus.OK);
+	}
+	
 
 	@DeleteMapping("/{uniqueid}")
 	public int deleteConfig(@PathVariable int uniqueid) {

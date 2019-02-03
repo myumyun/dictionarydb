@@ -3,6 +3,10 @@ package com.dictionarydb.service.impl;
 import java.io.IOException;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 
 @Service
+@Transactional
 public class ConfigServiceImpl implements ConfigService {
 
 	@Autowired
@@ -36,6 +41,10 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Override
 	public Config update(Config config) {
+		if(config != null && config.getUniqueid() == 0) {
+			Config old = configRepository.getConfigByName(config.getName());		
+			config.setUniqueid(old.getUniqueid());
+		}
 		return configRepository.save(config);
 	}
 

@@ -28,13 +28,13 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category update(Category category) {
 		return categoryRepository.save(category);
-		
+
 	}
 
 	@Override
 	public void delete(int uniqueid) {
 		categoryRepository.deleteById(uniqueid);
-		
+
 	}
 
 	@Override
@@ -42,5 +42,9 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.findAll();
 	}
 
+	@Override
+	public void deleteAll() {
+		categoryRepository.deleteAll();
+	}
 
 }
