@@ -31,4 +31,15 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public void init() {
+		User user = new User();
+		user.setEmail("mumin@gmail.com");
+		user.setName("mumun");
+		user.setUsername("muminay");
+		user.setPassword("$2a$10$3cEm4kbJ.4wT8nOjZvHb7OHxC4RTgzHqQCTwtMFsabLYPkyzhzJru");
+		userRepository.save(user);
+		
+	}
+
 }

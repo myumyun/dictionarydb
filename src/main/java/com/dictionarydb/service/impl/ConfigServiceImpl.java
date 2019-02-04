@@ -1,3 +1,4 @@
+
 package com.dictionarydb.service.impl;
 
 import java.io.IOException;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.dictionarydb.entity.Config;
 import com.dictionarydb.repository.ConfigRepository;
+import com.dictionarydb.repository.UserRepository;
 import com.dictionarydb.service.ConfigService;
+import com.dictionarydb.service.UserService;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -22,6 +25,9 @@ public class ConfigServiceImpl implements ConfigService {
 	@Autowired
 	private ConfigRepository configRepository;
 
+	@Autowired
+	private UserService userService;
+
 	@Override
 	public Config insert(Config family) {
 		return configRepository.save(family);
@@ -29,9 +35,9 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Override
 	public Config get(int uniqueid) {
-		try{
+		try {
 			return configRepository.findById(uniqueid).get();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("error would be omitted.");
 		}
 		return null;
@@ -39,8 +45,8 @@ public class ConfigServiceImpl implements ConfigService {
 
 	@Override
 	public Config update(Config config) {
-		if(config != null && config.getUniqueid() == 0) {
-			Config old = configRepository.getConfigByName(config.getName());		
+		if (config != null && config.getUniqueid() == 0) {
+			Config old = configRepository.getConfigByName(config.getName());
 			config.setUniqueid(old.getUniqueid());
 		}
 		return configRepository.save(config);
@@ -69,11 +75,13 @@ public class ConfigServiceImpl implements ConfigService {
 			try {
 				JsonParser parser = factory.createParser(config.getValue());
 			} catch (JsonParseException e) {
-				System.out.println("initilizing configs since there is parse error.");
+				System.out.println(
+						"initilizing configs since there is parse error.");
 				initializeConfig();
 				e.printStackTrace();
 			} catch (IOException e) {
-				System.out.println("initilizing configs since there is parse error.");
+				System.out.println(
+						"initilizing configs since there is parse error.");
 				initializeConfig();
 				e.printStackTrace();
 			}
@@ -87,15 +95,20 @@ public class ConfigServiceImpl implements ConfigService {
 		Config applicationConfig = new Config();
 		applicationConfig.setName("applicationConfig");
 		applicationConfig.setValue("{" + "\"dictionaryListRowCount\": 10,"
-				+ "\"dictionaryListTitle\": \"Dictionary List\"," + "\"dictionaryListHeaderLabels\":{},"
-				+ "\"dictionaryListShowItemCount\":10," + "\"dictionaryListShowPageCount\":5" + "}");
+				+ "\"dictionaryListTitle\": \"Dictionary List\","
+				+ "\"dictionaryListHeaderLabels\":{},"
+				+ "\"dictionaryListShowItemCount\":10,"
+				+ "\"dictionaryListShowPageCount\":5" + "}");
 
 		Config systemConfig = new Config();
 		systemConfig.setName("systemConfig");
-		systemConfig.setValue("{" + "\"webServiceUrl\":\"http://localhost:8080/api\"" + "}");
+		systemConfig.setValue(
+				"{" + "\"webServiceUrl\":\"http://localhost:8080/api\"" + "}");
 
 		configRepository.save(systemConfig);
 		configRepository.save(applicationConfig);
+
+		userService.init();
 	}
 
 }
