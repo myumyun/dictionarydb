@@ -108,7 +108,7 @@ public class ConfigServiceImpl implements ConfigService {
 		configRepository.save(systemConfig);
 		configRepository.save(applicationConfig);
 
-		userService.init();
+		//userService.init();
 	}
 
 }
