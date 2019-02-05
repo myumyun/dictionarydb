@@ -30,9 +30,8 @@ public class User {
 	@Size(max = 15)
 	private String username;
 
-	@NaturalId
+	
 	@Size(max = 40)
-	@Email
 	private String email;
 
 	@Size(max = 100)
